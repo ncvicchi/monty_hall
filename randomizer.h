@@ -1,5 +1,5 @@
 //
-// Created by beto on 10/30/22.
+// Created by Norberto Vicchi on 10/30/22.
 //
 
 #ifndef WAZUH_MONTY_HALL_RANDOMIZER_H

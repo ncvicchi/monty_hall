@@ -1,8 +1,15 @@
 //
-// Created by beto on 10/30/22.
+// Created by Norberto Vicchi on 10/30/22.
 //
 #include <stdlib.h>
 #include <time.h>
+
+/*
+ * rand function in stdlib does not return real random values.
+ * We will use it for simplicity, since we got good enough results.
+ *
+ * If a better randomizer is needed, its only necessary to replace rand_init and rand_lim
+ * */
 
 void rand_init(){
     /* Combining time() and clock to assure() different seeds between runs and
@@ -15,9 +22,9 @@ int rand_lim(int limit) {
     int divisor = RAND_MAX/(limit+1);
     int retVal;
 
-    do {
+    do
         retVal = rand() / divisor;
-    } while (retVal > limit);
+    while (retVal > limit);
 
     return retVal;
 }

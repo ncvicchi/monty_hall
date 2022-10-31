@@ -9,7 +9,7 @@
 #include "monty_hall.h"
 
 #ifndef MAX_ITERATOR_MULTIPLIER
-    #define MAX_ITERATOR_MULTIPLIER 7
+    #define MAX_ITERATOR_MULTIPLIER 8
 #endif
 
 #ifndef MAX_DOORS
@@ -27,6 +27,7 @@
 #if INIT_DOORS > MAX_DOORS
 #error "Maximum door count cannot be smaller than initial door count"
 #endif
+
 typedef struct {
     int iterations;
     int doorsCount;
@@ -39,45 +40,50 @@ typedef struct {
 }game_t;
 
 static game_t *launchGames(int doorCount, host_strategy_type_t hostStrategy, player_strategy_type_t playerStrategy);
-static int runGame(int iterations, int doorsCount, host_strategy_type_t hostStrategy, player_strategy_type_t playerStrategy);
+static int runGame(int iterations, int doorCount, host_strategy_type_t hostStrategy, player_strategy_type_t playerStrategy);
 static void *runGameThread(void *arg);
 static void waitForThreadsToFinish(game_t *games[6][MAX_DOORS - INIT_DOORS]);
 static void printResults(game_t *games[6][MAX_DOORS - INIT_DOORS]);
 
 int main(void) {
-    int i, j;
-    int iterations = 1;
     int doorCount;
-    int door = 0;
+    int door;
     game_t *games[6][MAX_DOORS - INIT_DOORS];
 
     /* Randomizer must be seeded before use */
     rand_init();
 
+    printf("Strategies\n");
+    printf("1: Host:%-14s / Player:%s\n", getHostStrategyName(choose_llama), getPlayerStrategyName(switch_door));
+    printf("2: Host:%-14s / Player:%s\n", getHostStrategyName(choose_llama), getPlayerStrategyName(keep_door));
+    printf("3: Host:%-14s / Player:%s\n", getHostStrategyName(choose_llama), getPlayerStrategyName(toss_coin));
+    printf("4: Host:%-14s / Player:%s\n", getHostStrategyName(choose_random), getPlayerStrategyName(switch_door));
+    printf("5: Host:%-14s / Player:%s\n", getHostStrategyName(choose_random), getPlayerStrategyName(keep_door));
+    printf("6: Host:%-14s / Player:%s\n", getHostStrategyName(choose_random), getPlayerStrategyName(toss_coin));
     printf("Please wait...\n\n");
 
     /* We want to verify how probability varies with different door count */
     for (door=0, doorCount = INIT_DOORS; doorCount < MAX_DOORS; doorCount++, door++) {
-        /* Monty Hall common game winning strategy */
+        /* Monty Hall common game - player winning strategy */
         games[0][door] = launchGames(doorCount, choose_llama, switch_door);
 
-        /* Monty Hall common game - losing strategy */
+        /* Monty Hall common game - player losing strategy */
         games[1][door] = launchGames(doorCount, choose_llama, keep_door);
 
-        /* Monty Hall common game - coin strategy */
+        /* Monty Hall common game - player coin strategy */
         games[2][door] = launchGames(doorCount, choose_llama, toss_coin);
 
-        /* Monty Hall with random opening - switch strategy */
+        /* Monty Hall with random opening door - player switch strategy */
         games[3][door] = launchGames(doorCount, choose_random, switch_door);
 
-        /* Monty Hall with random opening - keep strategy */
+        /* Monty Hall with random opening door - player keep strategy */
         games[4][door] = launchGames(doorCount, choose_random, keep_door);
 
-        /* Monty Hall with random opening - coin strategy */
+        /* Monty Hall with random opening door - player coin strategy */
         games[5][door] = launchGames(doorCount, choose_random, toss_coin);
     }
 
-    /* Let's wait a while */
+    /* Let's wait a some time until all games are over */
     waitForThreadsToFinish(games);
 
     /* All games ended. Let's see the results */
@@ -112,7 +118,7 @@ static void *runGameThread(void *arg){
     return NULL;
 }
 
-/* Launches all iterations for with a given strategies combination.
+/* Launches all iterations for with a given combination of strategies.
  * It creates an independent thread to run them.
  * */
 static game_t * launchGames(int doorCount, host_strategy_type_t hostStrategy, player_strategy_type_t playerStrategy){
@@ -142,10 +148,12 @@ static game_t * launchGames(int doorCount, host_strategy_type_t hostStrategy, pl
 
 /* Checks games data to verify that all threads finished processing */
 static void waitForThreadsToFinish(game_t *games[6][MAX_DOORS - INIT_DOORS]){
-    int threadCount=0, threadCountPrev = -1;
+    int threadCount=0;
     int door;
     int maxThreads;
     int i,j;
+    char animation[] = "-\\|/";
+    static int currentFrame = 0;
 
     /* Wait for launched games to finish */
     maxThreads = ((MAX_DOORS - INIT_DOORS) * MAX_ITERATOR_MULTIPLIER * 6);
@@ -159,16 +167,23 @@ static void waitForThreadsToFinish(game_t *games[6][MAX_DOORS - INIT_DOORS]){
                 }
             }
         }
-        printf("\x1B[1F\x1B[2K%d/%d thread finished\n", threadCount,
-               ((MAX_DOORS - INIT_DOORS) * MAX_ITERATOR_MULTIPLIER * 6));
-        threadCountPrev = threadCount;
-        usleep(10000);
+
+        printf("\x1B[1F\x1B[2K %d/%d thread finished %c\n",
+               threadCount,
+               ((MAX_DOORS - INIT_DOORS) * MAX_ITERATOR_MULTIPLIER * 6),
+               animation[currentFrame++]);
+
+        if(currentFrame == 4)
+            currentFrame = 0;
+        usleep(100000);
     }
 }
 
 /* Prints all game sessions in a table sorted by door count, iterations and strategies used */
 static void printResults(game_t *games[6][MAX_DOORS - INIT_DOORS]){
     int door, j;
+    printf("Strategies:\n");
+
     printf("Iterations │ Doors  │ %-*s│\n", ((13+MAX_ITERATOR_MULTIPLIER)*6)-2, "Strategies wins (Percentage)");
 
     // Header

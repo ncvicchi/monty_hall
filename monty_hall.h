@@ -1,5 +1,5 @@
 //
-// Created by beto on 10/30/22.
+// Created by Norberto Vicchi on 10/30/22.
 //
 
 #ifndef WAZUH_MONTY_HALL_MONTY_HALL_H
@@ -18,7 +18,8 @@ typedef enum{
 /*
  * Player strategy:
  * keep_door: Player will always choose to keep the door already selected
- * chance_door: Player will change the selected door to the one left unopened by the host
+ * change_door: Player will change the selected door to the one left unopened by the host
+ * toss_coin: Player will leave to luck if he switches or keeps the door
  * */
 typedef enum{
     keep_door = 0,
@@ -31,7 +32,7 @@ int gameSession(int doorCount,
                 host_strategy_type_t hostStrategy,
                 player_strategy_type_t playerStrategy);
 
-/* Returns player strategy name */
+/* Returns host strategy name */
 char *getHostStrategyName(host_strategy_type_t strategy);
 
 /* Returns player strategy name */
