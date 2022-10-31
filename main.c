@@ -24,6 +24,9 @@
 #error "The game requires at least 3 doors"
 #endif
 
+#if INIT_DOORS > MAX_DOORS
+#error "Maximum door count cannot be smaller than initial door count"
+#endif
 typedef struct {
     int iterations;
     int doorsCount;
