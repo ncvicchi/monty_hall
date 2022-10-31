@@ -36,14 +36,14 @@ static player_strategy_t player_strategies[3] = {
 };
 
 static char * host_strategy_name[2] = {
-        "Host opens all llamas doors",
-        "Host opens randomly"
+        "open llama's",
+        "opens randomly"
 };
 
 static char * player_strategy_name[3] = {
-        "Player keeps door",
-        "Player switches door",
-        "Player toss a coin to decide"
+        "keeps door",
+        "switches door",
+        "tosses coin"
 };
 
 /* Public functions */
