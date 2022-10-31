@@ -112,7 +112,7 @@ the llama? The table will be a little bigger, but not too much:
 | Probability   |          |            | $\frac{6}{18}$ = $\frac{1}{3}$        | $\frac{6}{18}$ =  $\frac{1}{3}$      |
 
 Our possibilities don't change at all now. Since the host chooses randomly, he can not add any new information by
-selecting a door, but takes for himself 1/3 of the chances from group 2.
+selecting a door, but takes for himself $\frac{1}{3}$ of the chances from group 2.
 This is the same as to getting 50% of probability if we keep the door, or 50% if we change the door.
 Option 3 would be the answer in this case.
 
@@ -249,8 +249,9 @@ Several things can be verified:
 - Processing time increases linearly with iterations
 - All theoretical conclusions are confirmed:
   - If the host chooses llamas, it's always better to switch
-  - If the player tosses a coin, probability changes to 1/2 (for any door amount), if the host chooses to open llamas doors (strategy 3) or
-  1/3 if the hosts opens randomly. (for 3 doors).
+  - If the player tosses a coin, probability changes to $\frac{1}{2}$ (for any door amount), if the host chooses to open
+  llamas doors (strategy 3) or $\frac{1}{3}$ if the hosts opens randomly. (for 3 doors).
   - All probabilities (except for strategy 3, since it's absolutely independent) will change according to door count
   - Switching doors it's the best strategy if the hosts always opens the doors with llamas. But tossing the coin will be
   the best one if the host chooses randomly.
+  - rand() standard function was used which, even it is not the best random generator, performed quite well.
