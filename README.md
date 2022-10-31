@@ -120,11 +120,17 @@ Option 3 would be the answer in this case.
 
 A similar analisis could be done with the tossing of a coin. 3 and 4 are essentially the same situation. In this case,
 since the choice is random, the probability no longer be $\frac{1}{3}$, neither $\frac{2}{3}$, but it will be become 
-$\frac{1}{3}$. Why? Simple.
+$\frac{1}{2}$. Why? Simple.
 
 The tossing of the coin has $\frac{1}{2}$ probabilities to come cross or head. And it being applied on 2 doors, one
 with a car, and one with a llama. The tossing of the coin is indeed and independent random event, so it replicates its
 probability.
+
+## Probabilities and door count
+
+If there would be more doors in the game, would probabilities change?
+If we considere the group probability discussed earlier, we can quickly realize that the more doors involved in the 
+game, the more chances to win by switching doors will be (or more chances to loose if keep the originally selected).
 
 ## References
 
@@ -138,6 +144,7 @@ compression" to help understand and also the use of 100 doors to present a more 
 
 ## The application:
 
+### Considerations
 I will make an application that will try to demonstrate that the game probabilities we've just calculated actually 
 works.
 
@@ -149,12 +156,36 @@ I will support this by applying the "Law of large numbers"
 Basically, I will make a simulation where the location of the cars and the llamas, and the selection of the player will
 be done randomly.
 
-I will present then 3 strategies:
-- The host chooses always the door with the llama. This is the first idea and should give a 1/3 chances if the 
-player doesn't change the door, and 2/3 chances if the door it's changed.
-- The host chooses randomly. In this strategy, the odds would be a 50%/50% chances of winning the car.
+THe host will have 2 strategies he can choose:
+- Open doors with llamas and leave one door unopened.
+- Open all doors except one, randomly selected (but not the one selected by the player)
 
+The player, on the other hand, admits 3 strategies:
+- Switch doors
+- Keep door
+- Toss a coin
 
+Then, we have 6 possible games we can simulate:
+- host choose llamas/player switch
+- host choose llamas/player keep
+- host choose llamas/player toss
+- host choose randomly/player switch
 
+All 6 strategies are tests for every run. Also, exponential iterations counts are performed to compare how this affects
+probabilities, as well as incrementa door count to check for probabilities changes.
 
+### Compiling & running
+
+The application was coded, tested and run on CLion (all default configs), under Ubuntu 20.04. No special considerations are necessaries.
+If using any other IDE o compiling from command line, care must be taken to include pthread lib in makefile o compiler flags.
+
+CLion terminal won't process ANSI Escape sequences. After compiling, please run the application from linux terminal.
+
+The application wont take main arguments, but parameters can be passed when compiling. If these are not passed, default values are used:
+
+MAX_ITERATOR_MULTIPLIER: How many times the iterator is multiply by 10
+MAX_DOORS: Maximum door count to be simulated. Must be equal or bigger than INIT_DOORS
+INIT_DOORS: Minimun door count to be evaluated. Cannot be less than 3
+
+Running the application:
 
