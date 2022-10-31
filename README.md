@@ -109,14 +109,20 @@ the llama? The table will be a little bigger, but not too much:
 | 3             | 2        | 3          | Loose                                 | Loose                                |
 | 3             | 3        | 2          | Win                                   | Loose                                |
 | 3             | 3        | 3          | Win                                   | Loose                                |
-| Probability   |          |            | $\frac{6}{188}$ = ***$\frac{1}{3}$*** | $\frac{6}{18}$ = ***$\frac{1}{3}$*** |
+| Probability   |          |            | $\frac{6}{18}$ = $\frac{1}{3}$        | $\frac{6}{18}$ =  $\frac{1}{3}$      |
 
 Our possibilities doesn't change at all now. Since the host chooses randomly, he can not add any new information by
 selecting a door, but takes for himself 1/3 of the chances from group 2.
 This is the same as to assing 50% of probability if we keep the door, or 50% if we change the door.
 Option 3 would be the answer in this case.
 
-A similar analisis could be done with the tossing of a coin. 3 and 4 are essentially the same situation.
+A similar analisis could be done with the tossing of a coin. 3 and 4 are essentially the same situation. In this case,
+since the choice is random, the probability no longer be $\frac{1}{3}$, neither $\frac{2}{3}$, but it will be become 
+$\frac{1}{3}$. Why? Simple.
+
+The tossing of the coin has $\frac{1}{2}$ probabilities to come cross or head. And it being applied on 2 doors, one
+with a car, and one with a llama. The tossing of the coin is indeed and independent random event, so it replicates its
+probability.
 
 ## References
 
@@ -141,7 +147,7 @@ I will support this by applying the "Law of large numbers"
 Basically, I will make a simulation where the location of the cars and the llamas, and the selection of the player will
 be done randomly.
 
-I will present then 2 strategies:
+I will present then 3 strategies:
 - The host chooses always the door with the llama. This is the first idea and should give a 1/3 chances if the 
 player doesn't change the door, and 2/3 chances if the door it's changed.
 - The host chooses randomly. In this strategy, the odds would be a 50%/50% chances of winning the car.
