@@ -26,7 +26,7 @@ llamas instead! Awesome plot twist!
 ![image](https://user-images.githubusercontent.com/69121070/198913751-ce6802b0-e7d5-4e1e-9651-b7b2f9eb518d.png)
 
 The location of the car and llamas is known to the host of the show, but of course, unknown to us. We are asked to
-choose one of the door.
+choose one of the doors.
 
 Immediately after, the host, who as said before knows where the car is, opens one of the remaining doors, knowing 
 beforehand that behind it there is a llama (and a pretty one!).
