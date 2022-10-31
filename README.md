@@ -14,7 +14,7 @@ you want. We will value the quality and clarity of your code
 
 ## Introduction
 The Monty Hall game its a game proposed to Von Savant (guinness record for the highest IQ) in one of her columns at the 
-... newspaper. It was a probability calculation problem, and her answer, although correct, create much controversy along
+Parade magazine. It was a probability calculation problem, and her answer, although correct, create much controversy along
 common people and mathematicians. It takes its name from a similar show, although not exactly the same, that was hosted 
 by a tv celebrity known by Monty Hall. 
 
@@ -23,10 +23,12 @@ We are at a TV Show where 3 doors are presented to us. Behind one of the doors, 
 new card. Behind the other 2 doors, in the original game there are 2 goats, but we love llamas, so we will say there are
 llamas instead! Awesome plot twist!
 
-The location of the car and llamas is known to the host of the show, but of course, unknown to us. We are asked to
-choose one of the door.
+![image](https://user-images.githubusercontent.com/69121070/198913751-ce6802b0-e7d5-4e1e-9651-b7b2f9eb518d.png)
 
-Immediately after, the host, who as said before knows where the car is, open one of the remaining doors, knowing 
+The location of the car and llamas is known to the host of the show, but of course, unknown to us. We are asked to
+choose one of the doors.
+
+Immediately after, the host, who as said before knows where the car is, opens one of the remaining doors, knowing 
 beforehand that behind it there is a llama (and a pretty one!).
 
 At this point in the game, we are left with only 2 doors unopened, one selected by us, and the car is still behind any
