@@ -254,4 +254,4 @@ Several things can be verified:
   - All probabilities (except for strategy 3, since it's absolutely independent) will change according to door count
   - Switching doors it's the best strategy if the hosts always opens the doors with llamas. But tossing the coin will be
   the best one if the host chooses randomly.
-  - rand() standard function was used which, even it is not the best random generator, performed quite well.
+- rand() standard function was used which, even it is not the best random generator, performed quite well.
