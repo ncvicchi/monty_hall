@@ -66,10 +66,10 @@ the groups didn't change. Group 1 still has 1/3, while group 2 has 2/3. Then, op
 choice. We should change the door we chose for the door we didn't choose.
 
 It is simple to visualize if instead of 3 doors, we have a million doors. Then the groups are divided in 1 group with 
-1/1.000.000 of possibilities of having the door (the one we chose) and a group with 999.999/1.000.000 of having the
+$\frac{1}{1.000.000}$ of possibilities of having the door (the one we chose) and a group with $\frac{999.999}{1.000.000}$ of having the
 car. Then the host removes 999.998 door from group 2, all of them with llamas. We end up with group one, which may or
-may not have the car, with a 1/1.000.000 chances, and group 2, with only one door too, which may or may not have the
-car, but with a 999.999/1.000.000 chances of containing the car. The option is then obvious. Change the door.
+may not have the car, with a $\frac{1}{1.000.000}$ chances, and group 2, with only one door too, which may or may not have the
+car, but with a $\frac{999.999}{1.000.000}$ chances of containing the car. The option is then obvious. Change the door.
 
 If this is not clear enough, a probability table with all possible moves and outcomes might be simpler to see:
 
