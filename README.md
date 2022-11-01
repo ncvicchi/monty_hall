@@ -38,7 +38,7 @@ one of them. The host then asks us if we would like to:
 
 The question then is, what should we do, or what would be the best choice?
 1. Keep the door we have already chosen
-2. Change out choice and select the door left unopened
+2. Change our choice and select the door that was left unopened
 3. No action will have any benefit
 4. Toss a coin to decide
 
@@ -50,7 +50,7 @@ prize, the other with our beloved llama, so there would be a 50/50 chance to win
 Well... no. 
 
 When we choose the door, we have 3 doors to choose from, the llamas and the car were (we assumed) randomly selected, and
-out choice was equally random since we have no other information (sound, smell, a corrupt show producer) that would 
+our choice was equally random since we have no other information (sound, smell, a corrupt show producer) that would 
 allow us to make a more educated guess.
 
 Then, the probability of the car to be behind the door we've chosen is $\frac{1}{3}$, while the probability of the car
@@ -61,15 +61,15 @@ It will be better to understand if we consider the door we chose as group 1, and
 There is then $\frac{1}{3}$ of possibilities that the car will be in group 1, while there are $\frac{2}{3}$ of
 probabilities that the card will be in group 2.
 
-When our friendly host reveals in group 2 where a llama was, he simplifies the group, but the original probabilities of
-the groups doesn't change. Group 1 still has 1/3, while group 2 has 2/3. Then, option 2 reveals itself as the optimal
+When our friendly host revealed in group 2 where a llama was, he simplified the group, but the original probabilities of
+the groups didn't change. Group 1 still has 1/3, while group 2 has 2/3. Then, option 2 reveals itself as the optimal
 choice. We should change the door we chose for the door we didn't choose.
 
 It is simple to visualize if instead of 3 doors, we have a million doors. Then the groups are divided in 1 group with 
 1/1.000.000 of possibilities of having the door (the one we chose) and a group with 999.999/1.000.000 of having the
 car. Then the host removes 999.998 door from group 2, all of them with llamas. We end up with group one, which may or
 may not have the car, with a 1/1.000.000 chances, and group 2, with only one door too, which may or may not have the
-car, but with a 999.999/1.000.000 chances of containing the car. The option is obvious then. Change the door.
+car, but with a 999.999/1.000.000 chances of containing the car. The option is then obvious. Change the door.
 
 If this is not clear enough, a probability table with all possible moves and outcomes might be simpler to see:
 
@@ -126,8 +126,11 @@ be independent, and 1/3 possibilities would occur.
 
 If there would be more doors in the game, would probabilities change?
 If we consider the group probability discussed earlier, we can quickly realize that the more doors involved in the 
-game, the more chances to win by switching doors will be (or more chances to lose if keep the originally selected).
-Except for the case that we toss a coin to choose. In that case, we will still have $\frac{1}{2}$ chances.
+game, the more chances to win by switching doors will be (or more chances to lose if the originally selected door is 
+kept).
+Except for the case that we toss a coin to choose when the host chooses a door with a llama behind. In that case, we
+will still have $\frac{1}{2}$ chances, no matter how many doors originally were in the game. Tossing the coin will be an
+independent event for the last 2 doors left.
 
 ## References
 
@@ -169,22 +172,26 @@ Then, we have 6 possible games we can simulate:
 - host choose randomly/player switch
 
 All 6 strategies are tests for every run. Also, exponential iterations counts are performed to compare how this affects
-probabilities, as well as increment door count to check for probabilities changes.
+probabilities, as well as incremental door count to check for probabilities changes.
 
 ### Compiling & running
 
-The application was coded, tested and run on CLion (all default configs), under Ubuntu 20.04. No special considerations are necessaries.
-If using any other IDE o compiling from command line, care must be taken to include pthread lib in makefile o compiler flags.
+The application was coded, tested and run on CLion (all default configs), under Ubuntu 20.04. No special considerations
+are necessaries.
+If using any other IDE o compiling from command line, care must be taken to include pthread lib in makefile o compiler
+flags.
 
-CLion terminal won't process ANSI Escape sequences. After compiling, please run the application from linux terminal.
+CLion terminal won't process ANSI Escape sequences. After compiling, please run the application from a linux terminal.
 
-The application won't take main arguments, but parameters can be passed when compiling. If these are not passed, default values are used:
+The application won't take main arguments, but parameters can be passed when compiling. If these are not passed, default
+values are used:
 
-MAX_ITERATOR_MULTIPLIER: How many times the iterator is multiply by 10. (default: 8 -> 10.000.000 iterations)
-MAX_DOORS: Maximum door count to be simulated. Must be equal or bigger than INIT_DOORS (default: 8 doors)
-INIT_DOORS: Minimum door count to be evaluated. Cannot be less than 3 (default: 3 doors)
+- MAX_ITERATOR_MULTIPLIER: How many times the iterator is multiply by 10. (default: 8 -> 10.000.000 iterations for each 
+game)
+- MAX_DOORS: Maximum door count to be simulated. Must be equal or bigger than INIT_DOORS (default: 8 doors)
+- INIT_DOORS: Minimum door count to be evaluated. Cannot be less than 3 (default: 3 doors)
 
-### Results evaluation
+### Results analysis
 
 Application output:
 
@@ -242,8 +249,9 @@ Application output:
     
     Process finished with exit code 0
 
-Several things can be verified:
-- Monte Carlo simulation approach seems to had been a good choice
+**Several things can be verified:**
+
+- Monte Carlo simulation approach seems to had been a good choice.
 - With an iteration multiplier value of 4 we already have a good approximation to analytic probability. 
 - Probability convergence is clearly appreciable while iteration increments. 
 - Processing time increases linearly with iterations
@@ -251,7 +259,11 @@ Several things can be verified:
   - If the host chooses llamas, it's always better to switch
   - If the player tosses a coin, probability changes to $\frac{1}{2}$ (for any door amount), if the host chooses to open
   llamas doors (strategy 3) or $\frac{1}{3}$ if the hosts opens randomly. (for 3 doors).
-  - All probabilities (except for strategy 3, since it's absolutely independent) will change according to door count
-  - Switching doors it's the best strategy if the hosts always opens the doors with llamas. But tossing the coin will be
-  the best one if the host chooses randomly.
+  - All probabilities (except for strategy 3, since it's absolutely independent) will change according to door count.
+  This meands that every time $\frac{1}{3}$ or $\frac{2}{3}$ was present, were indeed $\frac{1}{door count}$ or 
+ $\frac{2}{door count}$ instead.
+  - Switching doors it's the best strategy if the hosts always opens the doors with llamas. Even tossing a coin is a 
+better strategy than keeping the door.
+  - If the host chooses the door randomly, then there is no good strategy. A probability of $\frac{1}{door count}$ will
+  remain as the winning probability.
 - rand() standard function was used which, even it is not the best random generator, performed quite well.

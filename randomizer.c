@@ -8,7 +8,7 @@
  * rand function in stdlib does not return real random values.
  * We will use it for simplicity, since we got good enough results.
  *
- * If a better randomizer is needed, its only necessary to replace rand_init and rand_lim
+ * If a better randomizer is needed, it's only necessary to replace rand_init and rand_lim
  * */
 
 void rand_init(){
@@ -17,7 +17,7 @@ void rand_init(){
     srand((unsigned int)time(NULL) + (unsigned int)clock());
 }
 
-/* Return a random number between 0 and limit inclusive, maintaining random uniformity  */
+/* Returns a random number between 0 and limit inclusive, maintaining random uniformity  */
 int rand_lim(int limit) {
     int divisor = RAND_MAX/(limit+1);
     int retVal;

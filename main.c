@@ -28,6 +28,9 @@
 #error "Maximum door count cannot be smaller than initial door count"
 #endif
 
+/* Just to avoid magic numbers */
+#define STRATEGIES_NUMBER 6
+
 typedef struct {
     int iterations;
     int doorsCount;
@@ -48,12 +51,12 @@ static void printResults(game_t *games[6][MAX_DOORS - INIT_DOORS]);
 int main(void) {
     int doorCount;
     int door;
-    game_t *games[6][MAX_DOORS - INIT_DOORS];
+    game_t *games[STRATEGIES_NUMBER][MAX_DOORS - INIT_DOORS];
 
     /* Randomizer must be seeded before use */
     rand_init();
 
-    printf("Strategies\n");
+    printf("Strategies:\n");
     printf("1: Host:%-14s / Player:%s\n", getHostStrategyName(choose_llama), getPlayerStrategyName(switch_door));
     printf("2: Host:%-14s / Player:%s\n", getHostStrategyName(choose_llama), getPlayerStrategyName(keep_door));
     printf("3: Host:%-14s / Player:%s\n", getHostStrategyName(choose_llama), getPlayerStrategyName(toss_coin));
@@ -83,21 +86,21 @@ int main(void) {
         games[5][door] = launchGames(doorCount, choose_random, toss_coin);
     }
 
-    /* Let's wait a some time until all games are over */
+    /* Let's wait some time until all games are over */
     waitForThreadsToFinish(games);
 
     /* All games ended. Let's see the results */
     printResults(games);
 
-    /* Took a lot of resources. It's time to give them back */
-    for (int strategy_combination = 0; strategy_combination < 6; strategy_combination++)
+    /* Took a lot of resources. It's time to give them back! */
+    for (int strategy_combination = 0; strategy_combination < STRATEGIES_NUMBER; strategy_combination++)
         for (door = 0; door < MAX_DOORS-INIT_DOORS; door++)
             free(games[strategy_combination][door]);
 
     return 0;
 }
 
-/* Runs a single game session*/
+/* Runs a single game session */
 static int runGame(int iterations, int doorCount, host_strategy_type_t hostStrategy, player_strategy_type_t playerStrategy){
     int game, wins;
 
@@ -118,7 +121,7 @@ static void *runGameThread(void *arg){
     return NULL;
 }
 
-/* Launches all iterations for with a given combination of strategies.
+/* Launches all iterations for a given combination of strategies.
  * It creates an independent thread to run them.
  * */
 static game_t * launchGames(int doorCount, host_strategy_type_t hostStrategy, player_strategy_type_t playerStrategy){
@@ -131,32 +134,34 @@ static game_t * launchGames(int doorCount, host_strategy_type_t hostStrategy, pl
         exit(-1);
     }
 
-    for(i=0;i<MAX_ITERATOR_MULTIPLIER;i++) {
+    for (i = 0; i < MAX_ITERATOR_MULTIPLIER; i++) {
         games[i].doorsCount = doorCount;
         games[i].hostStrategy = hostStrategy;
         games[i].playerStrategy = playerStrategy;
         games[i].end = 0;
-    }
-    for (i = 0; i < MAX_ITERATOR_MULTIPLIER; i++) {
         games[i].iterations = iterations;
+
         pthread_create(&(games[i].thread), NULL, runGameThread, games + i);
+
         iterations *= 10;
     }
 
     return games;
 }
 
-/* Checks games data to verify that all threads finished processing */
-static void waitForThreadsToFinish(game_t *games[6][MAX_DOORS - INIT_DOORS]){
+/* Checks games end flag to verify that all threads finished processing
+ * This flag is an atomic type to allow checking it from the main thread
+ * without the need of a mutex or semaphore
+ * */
+static void waitForThreadsToFinish(game_t *games[STRATEGIES_NUMBER][MAX_DOORS - INIT_DOORS]){
     int threadCount=0;
     int door;
-    int maxThreads;
+    const int maxThreads = ((MAX_DOORS - INIT_DOORS) * MAX_ITERATOR_MULTIPLIER * 6);
     int i,j;
     char animation[] = "-\\|/";
     static int currentFrame = 0;
 
     /* Wait for launched games to finish */
-    maxThreads = ((MAX_DOORS - INIT_DOORS) * MAX_ITERATOR_MULTIPLIER * 6);
     while(threadCount < maxThreads) {
         threadCount = 0;
         for (i = 0; i < 6; i++) {
@@ -168,9 +173,10 @@ static void waitForThreadsToFinish(game_t *games[6][MAX_DOORS - INIT_DOORS]){
             }
         }
 
-        printf("\x1B[1F\x1B[2K %d/%d thread finished %c\n",
+        printf("\x1B[1F\x1B[2K (%2.0f %%) %6d/%d threads finished %c\n",
+               100*(float)threadCount / (float)maxThreads,
                threadCount,
-               ((MAX_DOORS - INIT_DOORS) * MAX_ITERATOR_MULTIPLIER * 6),
+               maxThreads,
                animation[currentFrame++]);
 
         if(currentFrame == 4)
@@ -179,10 +185,9 @@ static void waitForThreadsToFinish(game_t *games[6][MAX_DOORS - INIT_DOORS]){
     }
 }
 
-/* Prints all game sessions in a table sorted by door count, iterations and strategies used */
-static void printResults(game_t *games[6][MAX_DOORS - INIT_DOORS]){
+/* Prints all game sessions in a table sorted by door count, iterations, and strategies used */
+static void printResults(game_t *games[STRATEGIES_NUMBER][MAX_DOORS - INIT_DOORS]){
     int door, j;
-    printf("Strategies:\n");
 
     printf("Iterations │ Doors  │ %-*s│\n", ((13+MAX_ITERATOR_MULTIPLIER)*6)-2, "Strategies wins (Percentage)");
 

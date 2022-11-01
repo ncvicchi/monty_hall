@@ -50,7 +50,7 @@ static char * player_strategy_name[3] = {
 /* Public functions */
 /* gameSession
  * Performs a full game session, according to passed strategies
- * It returns 1 if car player win a car, 0 if player only won a cute llama
+ * It returns 1 if car player wins a car, 0 if player only won a cute llama
  * */
 int gameSession(int doorCount,
                 host_strategy_type_t hostStrategy,
@@ -64,7 +64,7 @@ int gameSession(int doorCount,
     if(MAX_DOORS > 100000 || doorCount < 3)
         return 0;
 
-    /* Places llamas behind all doors, except for 1 with a car */
+    /* Places llamas behind all doors, except for 1 door with a car */
     /* The door with the car is return for optimization porpoises.
      * It let us avoid to swipe all doors to find it
      * */
@@ -73,13 +73,13 @@ int gameSession(int doorCount,
     /* Randomly chooses a door */
     selectedDoor = playerChoosesDoor(doorCount);
 
-    /* Hosts open remaining door according to host strategy */
+    /* Host opens remaining door according to host strategy */
     doorKeptClosed = host_strategies[hostStrategy](selectedDoor, doorWithCar, doorCount);
 
-    /* Player plays according to player strategy and returns the finally selected door*/
+    /* Player plays according to player strategy and returns the finally selected door */
     selectedDoor = player_strategies[playerStrategy](selectedDoor, doorKeptClosed);
 
-    /* It opens the door and returns if the player won o lost*/
+    /* It opens the door and returns if the player won o lost */
     return gameResult(selectedDoor, doorWithCar);
 }
 
