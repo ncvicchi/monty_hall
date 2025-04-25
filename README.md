@@ -1,4 +1,4 @@
-# Wazuh Monty Hall Game Challenge
+# Monty Hall Game Challenge
 
 It answers a challenge to simulate and verify probabilities on the Monty Hall game
 
