@@ -1,6 +1,6 @@
 # Wazuh Monty Hall Game Challenge
 
-It answers Wazuh technical interview challenge to simulate and verify probabilities on the Monty Hall game
+It answers a challenge to simulate and verify probabilities on the Monty Hall game
 
 ## Request
 ### Implement an application
